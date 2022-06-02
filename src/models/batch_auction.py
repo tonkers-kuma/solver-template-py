@@ -19,20 +19,26 @@ from src.models.token import (
 from src.models.types import NumericType
 from src.models.uniswap import Uniswap, UniswapsSerializedType
 from src.util.enums import Chain
+from web3 import Web3
+import json
+import os
+
+ankr_url = 'https://rpc.xdaichain.com'
+w3 = Web3(Web3.HTTPProvider(ankr_url))
 
 
 class BatchAuction:
     """Class to represent a batch auction."""
 
     def __init__(
-        self,
-        tokens: dict[Token, TokenInfo],
-        orders: dict[str, Order],
-        uniswaps: dict[str, Uniswap],
-        ref_token: Token,
-        prices: Optional[dict] = None,
-        name: str = "batch_auction",
-        metadata: Optional[dict] = None,
+            self,
+            tokens: dict[Token, TokenInfo],
+            orders: dict[str, Order],
+            uniswaps: dict[str, Uniswap],
+            ref_token: Token,
+            prices: Optional[dict] = None,
+            name: str = "batch_auction",
+            metadata: Optional[dict] = None,
     ):
         """Initialize.
         Args:
@@ -154,6 +160,32 @@ class BatchAuction:
 
     def solve(self) -> None:
         """Solve Batch"""
+        print(f'cwd: {os.getcwd()}')
+        vault_raw = open('./contracts/artifacts/Vault.json')
+
+        vault_abi = json.load(vault_raw)["abi"]
+
+        print(f'yearn solver')
+        for order in self.orders:
+            print(type(order.buy_token))
+            buy_token = w3.eth.contract(address=Web3.toChecksumAddress(order.buy_token.value), abi=vault_abi)
+            sell_token = w3.eth.contract(address=Web3.toChecksumAddress(order.sell_token.value), abi=vault_abi)
+            if "yVault" in buy_token.functions.name().call() and buy_token.functions.token().call() == sell_token.address:
+                # order to buy yv and sell underlying
+                pps = buy_token.functions.pricePerShare().call()
+                dec = buy_token.functions.decimals().call()
+                buy_amount = int(order.sell_amount * (10 ** dec) / pps)
+            elif "yVault" in sell_token.functions.name().call() and sell_token.functions.token().call() == buy_token.address:
+                # order to buy underlying and sell yv
+                pps = sell_token.functions.pricePerShare().call()
+                dec = sell_token.functions.decimals().call()
+                buy_amount = int(order.sell_amount * pps / (10 ** dec))
+            else:
+                # no yv involved
+                continue
+            order.execute(buy_amount_value=buy_amount, sell_amount_value=order.sell_amount, xrate_tol=Decimal(5))
+            self.prices[order.buy_token] = Decimal(buy_amount)
+        return
 
     #################################
     #  SOLUTION PROCESSING METHODS  #
@@ -197,7 +229,7 @@ def load_metadata(metadata: dict[str, Any]) -> dict[str, Any]:
 
 
 def load_prices(
-    prices_serialized: dict[TokenSerializedType, NumericType]
+        prices_serialized: dict[TokenSerializedType, NumericType]
 ) -> dict[Token, Decimal]:
     """Load token price information as dict of Token -> Decimal."""
     if not isinstance(prices_serialized, dict):

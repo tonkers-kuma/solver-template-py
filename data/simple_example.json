@@ -1,0 +1,71 @@
+{
+    "tokens": {
+        "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83": {
+            "decimals": 8,
+            "alias": "USDC",
+            "external_price": 1000000000000000000,
+            "normalize_priority": 0,
+            "internal_buffer": "7015800954345235918043"
+        },
+        "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d": {
+            "decimals": 18,
+            "alias": "xDAI",
+            "external_price": 1000000000000000000,
+            "normalize_priority": 0,
+            "internal_buffer": "7015800954345235918043"
+        },
+        "0x21d7B09Bcf08F7b6b872BED56cB32416AE70bCC8": {
+            "decimals": 18,
+            "alias": "yvUSDC",
+            "external_price": 1030000000000000000,
+            "normalize_priority": 0,
+            "internal_buffer": "573049294721507372"
+        }
+    },
+    "orders": {
+        "0": {
+            "sell_token": "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
+            "buy_token": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
+            "sell_amount": "100",
+            "buy_amount": "100",
+            "allow_partial_fill": false,
+            "is_sell_order": true,
+            "fee": {
+                "amount": "0",
+                "token": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+            },
+            "cost": {
+                "amount": "0",
+                "token": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+            },
+            "is_liquidity_order": false,
+            "mandatory": false,
+            "has_atomic_execution": false
+        },
+        "1": {
+            "sell_token": "0x21d7B09Bcf08F7b6b872BED56cB32416AE70bCC8",
+            "buy_token": "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
+            "sell_amount": "980",
+            "buy_amount": "1080",
+            "allow_partial_fill": false,
+            "is_sell_order": true,
+            "fee": {
+                "amount": "0",
+                "token": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+            },
+            "cost": {
+                "amount": "0",
+                "token": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+            },
+            "is_liquidity_order": false,
+            "mandatory": false,
+            "has_atomic_execution": false
+        }
+    },
+    "metadata": {
+        "environment": "xDAI",
+        "auction_id": 20,
+        "gas_price": 4850000000.0,
+        "native_token": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d"
+    }
+}
