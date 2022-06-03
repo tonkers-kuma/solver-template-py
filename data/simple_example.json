@@ -17,7 +17,7 @@
         "0x21d7B09Bcf08F7b6b872BED56cB32416AE70bCC8": {
             "decimals": 18,
             "alias": "yvUSDC",
-            "external_price": 1030000000000000000,
+            "external_price": 1000000000000000000,
             "normalize_priority": 0,
             "internal_buffer": "573049294721507372"
         }

@@ -16,8 +16,9 @@ from src.models.batch_auction import BatchAuction
 from src.models.solver_args import SolverArgs
 from src.util.schema import (
     BatchAuctionModel,
-    SettledBatchAuctionModel,
+    SettledBatchAuctionModel
 )
+import src.models.yearn_solver as yearn_solver
 
 # Set decimal precision.
 decimal.getcontext().prec = 100
@@ -65,15 +66,10 @@ async def solve(problem: BatchAuctionModel, request: Request):  # type: ignore
     print("Parameters Supplied", solver_args)
 
     # 1. Solve BatchAuction: update batch_auction with
-    batch.solve()
+    settledBatchAuction = yearn_solver.solve(batch)
 
-    sample_output = {
-        "ref_token": batch.ref_token.value,
-        "orders": {order.order_id: order.as_dict() for order in batch.orders if order.is_executed()},
-        "prices": {key.value: str(value) for key, value in batch.prices.items()},
-        "amms": {},
-    }
-    return sample_output
+    print(settledBatchAuction)
+    return settledBatchAuction
 
 
 # ++++ Server setup: ++++
