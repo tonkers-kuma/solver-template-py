@@ -369,8 +369,13 @@ class ExecutedAmmModel(AmmModel):
 
 class InteractionData(BaseModel):
     """Interaction data."""
-    target: TokenId = Field(..., description="Target contract address to interact with.")
-    value: BigInt = Field(..., description="Value of native token, e.g. amount eth in eth transfer")
+
+    target: TokenId = Field(
+        ..., description="Target contract address to interact with."
+    )
+    value: BigInt = Field(
+        ..., description="Value of native token, e.g. amount eth in eth transfer"
+    )
     call_data: bytes = Field(..., description="Interaction encoding.")
 
 
@@ -391,6 +396,5 @@ class SettledBatchAuctionModel(BaseModel):
     amms: Dict[AmmId, ExecutedAmmModel] = Field(..., description="Executed AMMs.")
 
     interaction_data: List[InteractionData] = Field(
-        ..., description="List of interaction data."
+        description="List of interaction data.", default=[]
     )
-
