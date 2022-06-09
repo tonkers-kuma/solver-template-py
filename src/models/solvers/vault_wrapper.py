@@ -5,16 +5,9 @@ from src.util.schema import (
 from decimal import Decimal
 from web3 import Web3
 import json
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
-url = os.environ['NODE_URL']
-w3 = Web3(Web3.HTTPProvider(url))
-
-
-def solve(batch) -> SettledBatchAuctionModel:
-    print(f'Using Yearn simple solver')
+def solve(batch, settledBatch, w3) -> SettledBatchAuctionModel:
+    print(f'Using Yearn vault wrapper')
     vault_raw = open('./contracts/artifacts/Vault.json')
 
     vault_abi = json.load(vault_raw)["abi"]
@@ -66,10 +59,11 @@ def solve(batch) -> SettledBatchAuctionModel:
 
         prices[order.sell_token] = sell_amount
         prices[order.buy_token] = buy_amount
-    return SettledBatchAuctionModel(
-        ref_token=batch.ref_token.value,
-        orders={order.order_id: order.as_dict() for order in batch.orders if order.is_executed()},
-        prices={key.value: str(value) for key, value in prices.items()},
-        amms={},
-        interaction_data=interaction_data
-    )
+
+        settledBatch.ref_token = batch.ref_token.value,
+        settledBatch.orders = {order.order_id: order.as_dict() for order in batch.orders if order.is_executed()},
+        settledBatch.prices = {key.value: str(value) for key, value in prices.items()},
+        settledBatch.amms = {},
+        settledBatch.interaction_data = interaction_data
+
+        return settledBatch

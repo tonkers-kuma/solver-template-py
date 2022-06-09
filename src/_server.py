@@ -18,7 +18,7 @@ from src.util.schema import (
     BatchAuctionModel,
     SettledBatchAuctionModel
 )
-import src.models.yearn_solver as yearn_solver
+import src.models.solvers.yearn_solver as yearn_solver
 
 # Set decimal precision.
 decimal.getcontext().prec = 100

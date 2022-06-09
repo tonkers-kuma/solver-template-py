@@ -60,6 +60,23 @@
             "is_liquidity_order": false,
             "mandatory": false,
             "has_atomic_execution": false
+        },
+        "2": {
+            "sell_token": "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb",
+            "buy_token": "0x1337BedC9D22ecbe766dF105c9623922A27963EC",
+            "sell_amount": "10000000000000000",
+            "buy_amount": "1896457830924097804",
+            "allow_partial_fill": false,
+            "is_sell_order": true,
+            "fee": {
+                "amount": "23212472598551576",
+                "token": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+            },
+            "cost": {
+                "amount": "6657722265694875",
+                "token": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+            },
+            "is_liquidity_order": false
         }
     },
     "metadata": {

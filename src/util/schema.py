@@ -393,3 +393,4 @@ class SettledBatchAuctionModel(BaseModel):
     interaction_data: List[InteractionData] = Field(
         ..., description="List of interaction data."
     )
+
