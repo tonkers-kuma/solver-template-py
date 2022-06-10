@@ -61,9 +61,9 @@ def solve(token_in: Contract, amount_in, token_out: Contract, w3) -> (List[Inter
     # once we have the underlying token, we can lp
     # approve
     approve_data = InteractionData(
-        target=token_in.address,
+        target=underlying_token.address,
         value=0,
-        call_data=token_in.encodeABI(fn_name="approve", args=[curve_pool.address, amount_in])
+        call_data=underlying_token.encodeABI(fn_name="approve", args=[curve_pool.address, amount_in])
     )
 
     # for now just do single sided lp
